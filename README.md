@@ -4,4 +4,4 @@
 
 #### Project Management Board
 
-[Waffle.io](https://waffle.io/AdamMescher/2DoBox-Pivot)
+* [Waffle.io](https://waffle.io/AdamMescher/2DoBox-Pivot)
