@@ -11,3 +11,5 @@
 #### Project Management Board
 
 * [Waffle.io](https://waffle.io/AdamMescher/2DoBox-Pivot)
+
+[![Stories in Ready](https://badge.waffle.io/AdamMescher/2DoBox-Pivot.svg?label=ready&title=Ready)](http://waffle.io/AdamMescher/2DoBox-Pivot)
