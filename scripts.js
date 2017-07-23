@@ -50,23 +50,6 @@ $(document).on('mouseleave', '#downvote-button', function() {
   $(this).attr('src', 'icons/downvote.svg');
 });
 
-// $(".idea-stream").on('click', "#upvote-button", function() {
-//   var checkQualityStatus = $(this).closest('.card-quality-flex').find('.idea-quality').text();
-//   if (checkQualityStatus === 'swill') {
-//     $(this).closest('.card-quality-flex').find('.idea-quality').text('plausible');
-//   } else {$(this).closest('.card-quality-flex').find('.idea-quality').text('genius');
-//   }
-// });
-//
-// $(".idea-stream").on('click', "#downvote-button", function() {
-//   var checkQualityStatus = $(this).closest('.card-quality-flex').find('.idea-quality').text();
-//   if (checkQualityStatus === 'genius') {
-//     $(this).closest('.card-quality-flex').find('.idea-quality').text('plausible');
-//   } else {$(this).closest('.card-quality-flex').find('.idea-quality').text('swill');
-//   }
-// });
-
-
 function downVote() {
   var ideaID = $(this).closest('.idea-card').prop('id');
   console.log(ideaID);
@@ -196,3 +179,18 @@ function evalInputs() {
     resetInputs();
   }
 };
+
+$('#search-bar').on('keyup', searchIdeas);
+
+function searchIdeas(event){
+  event.preventDefault();
+  var newArray = ideaArray.filter(function(element){
+    return element.title.includes($('#search-bar').val()) || element.body.includes($('#search-bar').val());
+  });
+  $('.idea-card').remove();
+  newArray.forEach( function(element){
+    prependCard(element);
+  });
+  // we want to return any cards that match our input
+  // we want to hide any cards that dont match ou.r input
+}
