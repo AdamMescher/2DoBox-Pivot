@@ -97,9 +97,6 @@ function enableButton() {
   }
 }
 
-// SEARCH BAR EVENT LISTENER
-
-
 // SEARCH BAR CALLBACK FUNCTION
 function searchIdeas(event){
   event.preventDefault();
