@@ -1,44 +1,37 @@
 <!DOCTYPE html>
 <html>
-
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Ideabox</title>
+    <title>2DoBox</title>
     <link rel="stylesheet" type="text/css" href="styles.css" />
     <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet" />
     <link href="https://fonts.googleapis.com/css?family=Roboto+Slab:700" rel="stylesheet" />
   </head>
-
-  <body> 
+  <body>
     <div class="container">
-      <section class="blue-box">
-        <article class="idea-log">
-          <h1><span class="idea-text">idea</span><span class="box-text">box</span></h1>
+      <section class="top">
+        <article class="todo-log">
+          <h1><span class="todo-text">2Do</span><span class="box-text">box</span></h1>
           <form>
-            <input id="idea-title" class="user-inputs" type="text" name="title" placeholder="Title" required />
-            <input id="idea-body" class="user-inputs" type="text" name="body" placeholder="Body" required />
+            <input id="todo-title" class="user-inputs" type="text" name="title" placeholder="Title" required />
+            <input id="todo-body" class="user-inputs" type="text" name="body" placeholder="Body" required />
             <button id="save-button" class="user-inputs" type="submit" disabled />save</button>
           </form>
         </article>
       </section>
-      <section class="white-box search-box">
-        <article class="idea-log">
+      <section class="bottom search-box">
+        <article class="todo-log">
           <form>
             <input id="search-bar" class="user-inputs" type="text" name="search" placeholder="Search" />
           </form>
         </article>
       </section>
       <section class="white-box">
-        <article class="idea-log idea-stream" >
-
-        </article>
+        <article class="todo-log todo-stream"></article>
       </section>
     </div>
-
-    <script src="http://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
-    <script>window.jQuery || document.write('<script src="path/to/your/jquery.min.js"><\/script>')</script>
-    <script src=scripts.js></script>
+    <script src="jquery-3.2.1.min.js"></script>
+    <script src="scripts.js"></script>
   </body>
-
 </html>
