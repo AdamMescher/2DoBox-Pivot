@@ -68,12 +68,12 @@ form {
   font-weight: bold;
 }
 
-#todo-body {
+#todo-task {
   margin-bottom:
 }
 
 #todo-title,
-#todo-body {
+#todo-task {
   padding-left: 5px;
 }
 
@@ -94,13 +94,13 @@ form {
 }
 
 #todo-title,
-#todo-body,
+#todo-task,
 #save-button,
-#search-bar:focus {
+#filter-bar:focus {
   outline: none;
 }
 
-#search-bar {
+#filter-bar {
   margin: 25px 0;
 }
 
@@ -202,11 +202,11 @@ p {
   }
 
   #todo-title,
-  #search-bar {
+  #filter-bar {
     height: 50px;
   }
 
-  #todo-body {
+  #todo-task {
     height: 120px;
     padding-bottom: 75px;
   }
@@ -216,7 +216,7 @@ p {
     height: 60px;
   }
 
-  ::-webkit-#todo-body-placeholder {
+  ::-webkit-#todo-task-placeholder {
     padding-bottom: 75px;
   }
 
@@ -224,7 +224,7 @@ p {
     margin-bottom: 40px;
   }
 
-  #search-bar {
+  #filter-bar {
     margin-bottom: 30px;
   }
 

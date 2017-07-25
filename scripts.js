@@ -2,15 +2,22 @@ var todoArray = [];
 getTodoFromStorage();
 makeCards(todoArray);
 
+function FreshTodo(title, task, status) {
+  this.title = title;
+  this.task = task;
+  this.status = "swill";
+  this.id = Date.now();
+}
+
 //EVENT LISTENERS
-$('#search-bar').on('keyup', searchtodos);
+$('#filter-bar').on('keyup', searchtodos);
 $(".todo-stream").on('click', ".delete-button", deleteCard)
 $('.todo-stream').on('click', '#upvote-button', upVote);
 $('.todo-stream').on('click', '#downvote-button', downVote);
-$('.todo-stream').on('keyup', 'h2', editText);
-$('.todo-stream').on('keyup', 'p', editText);
+$('.todo-stream').on('keyup', 'h2', editTitle);
+$('.todo-stream').on('keyup', 'p', editTask);
 $("#save-button").on('click', saveButton);
-$("#todo-body, #todo-title").keyup(enableButton);
+$("#todo-task, #todo-title").keyup(enableButton);
 
 // HOVER CHANGE IMAGE FUNCTIONS
 
@@ -56,7 +63,7 @@ function prependCard(todo) {
         <h2 contenteditable=true>${todo.title}</h2>
         <img src="icons/delete.svg" class="card-buttons delete-button" />
       </div>
-      <p contenteditable=true>${todo.body}</p>
+      <p contenteditable=true>${todo.task}</p>
       <div class="card-quality-flex quality-spacing">
         <img src="icons/upvote.svg" class="card-buttons" id="upvote-button"/>
         <img src="icons/downvote.svg" class="card-buttons" id="downvote-button" />
@@ -73,7 +80,7 @@ function makeCards(arr) {
 }
 
 function addCard() {
-  var newTodo = new FreshTodo($('#todo-title').val(), $('#todo-body').val());
+  var newTodo = new FreshTodo($('#todo-title').val(), $('#todo-task').val());
   prependCard(newTodo);
   todoArray.push(newTodo);
   sendTodoToStorage();
@@ -89,7 +96,7 @@ function saveButton(event) {
 }
 
 function enableButton() {
-  if (($("#todo-title").val() !== "") && ($("#todo-body").val() !== "")) {
+  if (($("#todo-title").val() !== "") && ($("#todo-task").val() !== "")) {
     reenableSaveButton();
   } else{
     disableSaveButton();
@@ -123,7 +130,7 @@ function removeAllCards() {
 
 function foundSearchTodos() {
   return todoArray.filter(function(element){
-    return element.title.toLowerCase().includes($('#search-bar').val().toLowerCase()) || element.body.includes($('#search-bar').val().toLowerCase());
+    return element.title.toLowerCase().includes($('#filter-bar').val().toLowerCase()) || element.task.includes($('#filter-bar').val().toLowerCase());
   });
 }
 
@@ -198,26 +205,31 @@ function makeGenius(element) {
   $('#' + element.id).find('.todo-quality').text('genius');
 }
 
-function FreshTodo(title, body, status) {
-  this.title = title;
-  this.body = body;
-  this.status = "swill";
-  this.id = Date.now();
-}
-
 // EDIT TEXT FUNCTION
 function leaveTarget() {
   event.preventDefault();
   $('p, h2').blur();
 }
 
-function editText(event) {
+function editTitle(event) {
   (event.keyCode === 13) ? leaveTarget(event) : null;
   var id = $(this).closest('.todo-card')[0].id;
-  var body = $(this).text();
+  var title = $(this).text();
   todoArray.forEach(function(card) {
     if (card.id == id) {
-      card.title = body;
+      card.title = title;
+    }
+    sendTodoToStorage();
+  });
+}
+
+function editTask(event) {
+  (event.keyCode === 13) ? leaveTarget(event) : null;
+  var id = $(this).closest('.todo-card')[0].id;
+  var task = $(this).text();
+  todoArray.forEach(function(card) {
+    if (card.id == id) {
+      card.task = task;
     }
     sendTodoToStorage();
   });
@@ -231,5 +243,5 @@ function editField(event) {
 // INPUT FIELD FUNCTIONS
 function resetInputs() {
   $('#todo-title').val('');
-  $('#todo-body').val('');
+  $('#todo-task').val('');
 };
