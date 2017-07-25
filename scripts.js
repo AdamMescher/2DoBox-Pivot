@@ -1,16 +1,16 @@
-var ideaArray = [];
-getIdeaFromStorage();
-makeCards(ideaArray);
+var todoArray = [];
+getTodoFromStorage();
+makeCards(todoArray);
 
 //EVENT LISTENERS
-$('#search-bar').on('keyup', searchIdeas);
-$(".idea-stream").on('click', ".delete-button", deleteCard)
-$('.idea-stream').on('click', '#upvote-button', upVote);
-$('.idea-stream').on('click', '#downvote-button', downVote);
-$('.idea-stream').on('keyup', 'h2', editText);
-$('.idea-stream').on('keyup', 'p', editText);
-$("#save-button").on('click', saveCard);
-$("#idea-body, #idea-title").keyup(enableButton);
+$('#search-bar').on('keyup', searchtodos);
+$(".todo-stream").on('click', ".delete-button", deleteCard)
+$('.todo-stream').on('click', '#upvote-button', upVote);
+$('.todo-stream').on('click', '#downvote-button', downVote);
+$('.todo-stream').on('keyup', 'h2', editText);
+$('.todo-stream').on('keyup', 'p', editText);
+$("#save-button").on('click', saveButton);
+$("#todo-body, #todo-title").keyup(enableButton);
 
 // HOVER CHANGE IMAGE FUNCTIONS
 
@@ -39,29 +39,28 @@ $(document).on('mouseleave', '#downvote-button', function() {
 });
 
 // LOCALSTORAGE
-function sendIdeaToStorage() {
-  localStorage.setItem("ideaArray", JSON.stringify(ideaArray));
+function sendTodoToStorage() {
+  localStorage.setItem("todoArray", JSON.stringify(todoArray));
 }
 
-function getIdeaFromStorage() {
-  if (localStorage.getItem('ideaArray')) {
-    ideaArray = JSON.parse(localStorage.getItem("ideaArray"));
+function getTodoFromStorage() {
+  if (localStorage.getItem('todoArray')) {
+    todoArray = JSON.parse(localStorage.getItem("todoArray"));
   }
 }
 
 // CARDS
-function prependCard(idea) {
-  $('.idea-stream').prepend(
-    `<div class="idea-card" id="${idea.id}">
-      <div class="card-title-flex">
-        <h2 contenteditable=true>${idea.title}</h2>
+function prependCard(todo) {
+  $('.todo-stream').prepend(
+    `<div class="todo-card" id="${todo.id}"><div class="card-title-flex">
+        <h2 contenteditable=true>${todo.title}</h2>
         <img src="icons/delete.svg" class="card-buttons delete-button" />
       </div>
-      <p contenteditable=true>${idea.body}</p>
+      <p contenteditable=true>${todo.body}</p>
       <div class="card-quality-flex quality-spacing">
         <img src="icons/upvote.svg" class="card-buttons" id="upvote-button"/>
-        <img src="icons/downvote.svg"  class="card-buttons" id="downvote-button" />
-        <h3>quality: <span class="idea-quality">${idea.status}</span></h3>
+        <img src="icons/downvote.svg" class="card-buttons" id="downvote-button" />
+        <h3>quality: <span class="todo-quality">${todo.status}</span></h3>
       </div>
     </div>`
   );
@@ -74,110 +73,132 @@ function makeCards(arr) {
 }
 
 function addCard() {
-  var ideaTitle = $("#idea-title").val();
-  var ideaBody = $("#idea-body").val();
-  var ideaStatus = "swill"
-  var newIdea = new FreshIdea(ideaTitle, ideaBody, ideaStatus);
-  prependCard(newIdea);
-  ideaArray.push(newIdea);
-  sendIdeaToStorage();
+  var newTodo = new FreshTodo($('#todo-title').val(), $('#todo-body').val());
+  prependCard(newTodo);
+  todoArray.push(newTodo);
+  sendTodoToStorage();
 };
 
 // SAVE BUTTON
-
-function saveCard(event) {
+function saveButton(event) {
   event.preventDefault();
-  evalInputs();
-  $("#save-button").attr("disabled", true);
+  addCard();
+  resetInputs();
+  disableSaveButton();
+  refocusTitleInput();
 }
 
 function enableButton() {
-  if (($("#idea-title").val() !== "") || ($("#idea-body").val() !== "")) {
-    $("#save-button").removeAttr("disabled");
+  if (($("#todo-title").val() !== "") && ($("#todo-body").val() !== "")) {
+    reenableSaveButton();
+  } else{
+    disableSaveButton();
   }
 }
 
+function reenableSaveButton() {
+  $("#save-button").removeAttr("disabled");
+}
+
+function disableSaveButton() {
+  $("#save-button").attr("disabled", true);
+}
+
+function refocusTitleInput() {
+  $('#todo-title').focus();
+}
+
 // SEARCH BAR CALLBACK FUNCTION
-function searchIdeas(event){
+function searchtodos(event){
   event.preventDefault();
-  var newArray = ideaArray.filter(function(element){
-    return element.title.toLowerCase().includes($('#search-bar').val().toLowerCase()) || element.body.includes($('#search-bar').val().toLowerCase());
-  });
-  $('.idea-card').remove();
-  newArray.forEach( function(element){
+  removeAllCards();
+  foundSearchTodos().forEach( function(element){
     prependCard(element);
+  });
+}
+
+function removeAllCards() {
+  $('.todo-card').remove();
+}
+
+function foundSearchTodos() {
+  return todoArray.filter(function(element){
+    return element.title.toLowerCase().includes($('#search-bar').val().toLowerCase()) || element.body.includes($('#search-bar').val().toLowerCase());
   });
 }
 
 // DELETE BUTTON CALLBACK FUNCTION
 function deleteCard() {
-  var ideaID = $(this).closest('.idea-card').prop('id');
-  var index = ideaArray.findIndex(function(element){
-    return element.id == ideaID;
+  var todoID = $(this).closest('.todo-card').prop('id');
+  var index = todoArray.findIndex(function(element){
+    return element.id == todoID;
   });
-  $(this).closest('.idea-card').remove();
-  ideaArray.splice(index, 1);
-  sendIdeaToStorage();
+  $(this).closest('.todo-card').remove();
+  removeItemFromArray(index);
+  sendTodoToStorage();
+}
+
+function removeItemFromArray(i) {
+  todoArray.splice(i, 1);
 }
 
 // DOWNVOTE BUTTON CALLBACK FUNCTION
 function downVote() {
-  var ideaID = $(this).closest('.idea-card').prop('id').toString();
-  var index = ideaArray.findIndex(function(element){
-    return element.id == ideaID;
+  var todoID = $(this).closest('.todo-card').prop('id').toString();
+  var index = todoArray.findIndex(function(element){
+    return element.id == todoID;
   });
-  if (isGenius(ideaArray[index]) === true )  {
-    makePlausible(ideaArray[index]);
-  } else if ( isPlausible( ideaArray[index]) === true ) {
-      makeSwill(ideaArray[index]);
+  if (isGenius(todoArray[index]) === true )  {
+    makePlausible(todoArray[index]);
+  } else if ( isPlausible( todoArray[index]) === true ) {
+      makeSwill(todoArray[index]);
   }
-  sendIdeaToStorage();
+  sendTodoToStorage();
 }
 
 // UPVOTE BUTTON CALLBACK FUNCTION
 function upVote() {
-  var ideaID = $(this).closest('.idea-card').prop('id').toString();
-  var index = ideaArray.findIndex(function (element){
-      return element.id == ideaID;
+  var todoID = $(this).closest('.todo-card').prop('id').toString();
+  var index = todoArray.findIndex(function (element){
+      return element.id == todoID;
     })
-  if (isSwill(ideaArray[index]) === true){
-    makePlausible(ideaArray[index]);
+  if (isSwill(todoArray[index]) === true){
+    makePlausible(todoArray[index]);
 
-  } else if (isPlausible(ideaArray[index]) === true){
-    makeGenius(ideaArray[index]);
+  } else if (isPlausible(todoArray[index]) === true){
+    makeGenius(todoArray[index]);
   }
-  sendIdeaToStorage();
+  sendTodoToStorage();
 }
 
-// UPVOTE / DOWNVOTE REFACTOR FUNCTIONS
 function isSwill(element) {
-  return (element.status === 'swill') ? true : false;
+  return element.status === 'swill';
 }
 
 function isPlausible(element) {
-  return (element.status === 'plausible') ? true : false;
+  return element.status === 'plausible';
 }
 
 function isGenius(element) {
-  return (element.status === 'genius') ? true : false;
+  return element.status === 'genius';
 }
 
 function makeSwill(element) {
   element.status = 'swill';
-  $('#' + element.id).find('.idea-quality').text('swill');
+  $('#' + element.id).find('.todo-quality').text('swill');
 }
 
 function makePlausible(element){
   element.status = "plausible";
-  $('#' + element.id).find('.idea-quality').text('plausible');
+  $('#' + element.id).find('.todo-quality').text('plausible');
 }
 
 function makeGenius(element) {
   element.status = "genius";
-  $('#' + element.id).find('.idea-quality').text('genius');
+  $('#' + element.id).find('.todo-quality').text('genius');
 }
 
-function FreshIdea(title, body, status) {
+function FreshTodo(title, body, status) {
   this.title = title;
   this.body = body;
   this.status = "swill";
@@ -185,21 +206,20 @@ function FreshIdea(title, body, status) {
 }
 
 // EDIT TEXT FUNCTION
-
-function leaveTarget(event) {
+function leaveTarget() {
   event.preventDefault();
   $('p, h2').blur();
 }
 
 function editText(event) {
   (event.keyCode === 13) ? leaveTarget(event) : null;
-  var id = $(this).closest('.idea-card')[0].id;
+  var id = $(this).closest('.todo-card')[0].id;
   var body = $(this).text();
-  ideaArray.forEach(function(card) {
+  todoArray.forEach(function(card) {
     if (card.id == id) {
       card.title = body;
     }
-    sendIdeaToStorage();
+    sendTodoToStorage();
   });
 }
 
@@ -210,19 +230,6 @@ function editField(event) {
 
 // INPUT FIELD FUNCTIONS
 function resetInputs() {
-  $('#idea-title').val('');
-  $('#idea-body').val('');
+  $('#todo-title').val('');
+  $('#todo-body').val('');
 };
-
-function evalInputs() {
-  var ideaTitle = $("#idea-title").val();
-  var ideaBody = $("#idea-body").val();
-  if (!ideaTitle) {
-    return alert("Please enter a title.");
-  } else if (!ideaBody) {
-    return alert ("Please enter something in the body.");
-  } else {
-    addCard();
-    resetInputs();
-  }
-}
