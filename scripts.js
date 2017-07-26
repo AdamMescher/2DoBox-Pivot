@@ -1,7 +1,14 @@
 var todoArray = [];
 var showCompleteTodosButtonCounter = 0;
+var showMoreTodosButtonCounter = 0;
+var todoCriticalFilterCounter = 0;
+var todoHighFilterCounter = 0;
+var todoNormalFilterCounter = 0;
+var todoLowFilterCounter = 0;
+var todoNoneFilterCounter = 0;
+
 getTodoFromStorage();
-makeCards(todoArray);
+makeTenCards(todoArray);
 
 function FreshTodo(title, task, status) {
   this.title = title;
@@ -22,6 +29,7 @@ $('.todo-stream').on('keyup', '.card-task-editable', editTask);
 $("#save-button").on('click', saveButton);
 $("#todo-task, #todo-title").keyup(enableButton);
 $(".todo-stream").on('click', '.card-completed-task-button', markCompleted);
+$('.show-completed-todos-button').on('click', prependCompletedTodos);
 
 // HOVER CHANGE IMAGE FUNCTIONS
 
@@ -63,7 +71,7 @@ function getTodoFromStorage() {
 // CARDS
 function prependCard(todo) {
   $('.todo-stream').prepend(
-    `<div class="todo-card ${todo.completed}" id="${todo.id}"><div class="card-title-flex">
+    `<div class="todo-card ${todo.completed} ${todo.status}" id="${todo.id}"><div class="card-title-flex">
         <h2 class="card-title-editable" contenteditable=true>${todo.title}</h2>
         <img src="icons/delete.svg" class="card-buttons delete-button" />
       </div>
@@ -80,24 +88,29 @@ function prependCard(todo) {
   );
 };
 
+function makeTenCards(arr) {
+  for(var i = arr.length - 10; i < arr.length; i++){
+    if(arr[i] != undefined){
+      prependCard(arr[i]);
+    }
+  }
+}
+
+function showAllCards() {
+  removeAllCards();
+  makeCards(todoArray);
+}
+
 function makeCards(arr) {
   arr.forEach(function(element){
     prependCard(element);
-    $('.show-all').removeClass('show-all');
+    removeShowAllClass();
   })
-  // checkIfCompleted();
-  // check if completed === true
 }
 
-// function checkIfCompleted(){
-//   todoArray.forEach(function(card) {
-//     if (card.completed === true) {
-//       // $(this).parent().parent().toggleClass('grey-out');
-//     }
-//   })
-// }
-
-
+function removeShowAllClass() {
+  $('.show-all').removeClass('show-all');
+}
 
 function addCard() {
   var newTodo = new FreshTodo($('#todo-title').val(), $('#todo-task').val());
@@ -228,26 +241,39 @@ function isCritical(element) {
 function makeNone(element) {
   element.status = 'none';
   $('#' + element.id).find('.todo-quality').text('none');
+  $('#' + element.id).removeClass('low');
+  $('#' + element.id).addClass('none');
 }
 
 function makeLow(element) {
   element.status = 'low';
   $('#' + element.id).find('.todo-quality').text('low');
+  $('#' + element.id).removeClass('none');
+  $('#' + element.id).removeClass('normal');
+  $('#' + element.id).addClass('low');
 }
 
 function makeNormal(element) {
   element.status = 'normal';
   $('#' + element.id).find('.todo-quality').text('normal');
+  $('#' + element.id).removeClass('low');
+  $('#' + element.id).removeClass('high');
+  $('#' + element.id).addClass('normal');
 }
 
 function makeHigh(element){
   element.status = "high";
   $('#' + element.id).find('.todo-quality').text('high');
+  $('#' + element.id).removeClass('normal');
+  $('#' + element.id).removeClass('critical');
+  $('#' + element.id).addClass('high');
 }
 
 function makeCritical(element) {
   element.status = "critical";
   $('#' + element.id).find('.todo-quality').text('critical');
+  $('#' + element.id).removeClass('high');
+  $('#' + element.id).addClass('critical');
 }
 
 // EDIT TEXT FUNCTION
@@ -305,14 +331,10 @@ function markCompleted(){
       $('#' + id).addClass('false');
     }
   })
-  // $(this).parent().parent().toggleClass('grey-out');
   sendTodoToStorage();
 }
 
-$('.show-completed-todos-button').on('click', prependCompletedTodos);
-
 function prependCompletedTodos(){
-  // filter the todo array for card.completed === true
   var completedTodosArray = todoArray.filter(function(element){
     return element.completed === true;
   })
@@ -331,23 +353,73 @@ function prependCompletedTodos(){
   else {
     $('.todo-card').toggleClass('show-all');
   }
-  //
-  // removeAllCards();
-  // makeCards(uncompletedTodosArray);
-  // makeCards(completedTodosArray);
-  // $('.todo-card').toggleClass('show-all');
-
-
 }
 
-// function showCompleted(){
-//   var id= $(this).find('.todo-card')[0].id;
-//   console.log($(this))
-//   todoArray.forEach(function(card) {
-//     if (card.id == id) {
-//       card.completed = true;
-//     }
-//   })
-//   $(this).parent().parent().toggleClass('show-all');
-//   sendTodoToStorage();
-// }
+$('.show-more-todos-button').on('click', showMoreTodos);
+
+function showMoreTodos() {
+  showMoreTodosButtonCounter ++;
+  if(showMoreTodosButtonCounter % 2 === 0) {
+    removeAllCards();
+    makeTenCards(todoArray);
+  }
+  else {
+    showAllCards();
+  }
+}
+
+$('.todo-critical-filter-button').on('click', todoCriticalFilter)
+$('.todo-high-filter-button').on('click', todoHighFilter)
+$('.todo-normal-filter-button').on('click', todoNormalFilter)
+$('.todo-low-filter-button').on('click', todoLowFilter)
+$('.todo-none-filter-button').on('click', todoNoneFilter)
+
+function todoCriticalFilter(){
+  todoCriticalFilterCounter ++;
+  if(todoCriticalFilterCounter % 2 === 1){
+    $('.critical').removeClass('hidden');
+    $('.high, .normal, .low, .none').addClass('hidden');
+  } else {
+    $('.todo-card').removeClass('hidden');
+  }
+}
+
+function todoHighFilter() {
+  todoHighFilterCounter ++;
+  if(todoHighFilterCounter % 2 === 1){
+    $('.high').removeClass('hidden');
+    $('.critical, .normal, .low, .none').addClass('hidden');
+  } else {
+    $('.todo-card').removeClass('hidden');
+  }
+}
+
+function todoNormalFilter() {
+  todoNormalFilterCounter ++;
+  if(todoNormalFilterCounter % 2 === 1){
+    $('.normal').removeClass('hidden');
+    $('.critical, .high, .low, .none').addClass('hidden');
+  } else {
+    $('.todo-card').removeClass('hidden');
+  }
+}
+
+function todoLowFilter() {
+  todoLowFilterCounter ++;
+  if(todoLowFilterCounter % 2 === 1){
+    $('.low').removeClass('hidden');
+    $('.critical, .high, .normal, .none').addClass('hidden');
+  } else {
+    $('.todo-card').removeClass('hidden');
+  }
+}
+
+function todoNoneFilter() {
+  todoNoneFilterCounter ++;
+  if(todoNoneFilterCounter % 2 === 1){
+    $('.none').removeClass('hidden');
+    $('.critical, .high, .normal, .low').addClass('hidden');
+  } else {
+    $('.todo-card').removeClass('hidden');
+  }
+}

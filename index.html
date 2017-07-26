@@ -25,6 +25,13 @@
           <form>
             <input id="filter-bar" class="user-inputs" type="text" name="filter" placeholder="Filter" />
           </form>
+          <div class="todo-importance-filter-container">
+              <button class="todo-critical-filter-button importance-filter-button">critical</button>
+              <button class="todo-high-filter-button importance-filter-button">high</button>
+              <button class="todo-normal-filter-button importance-filter-button">normal</button>
+              <button class="todo-low-filter-button importance-filter-button">low</button>
+              <button class="todo-none-filter-button importance-filter-button">none</button>
+          </div>
         </article>
         <article class="show-completed-todos-container">
           <button class="show-completed-todos-button">show completed todos</button>
@@ -32,6 +39,7 @@
       </section>
       <section class="white-box">
         <article class="todo-log todo-stream"></article>
+        <button class="show-more-todos-button">show more todos...</button>
       </section>
     </div>
     <script src="jquery-3.2.1.min.js"></script>
