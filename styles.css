@@ -212,6 +212,10 @@ p {
   background-color: #FFFFFF;
 }
 
+.hidden {
+  display: none;
+}
+
 @media (max-width: 900px) {
   .todo-log {
     width: 80%;
