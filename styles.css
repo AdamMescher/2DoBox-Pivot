@@ -197,6 +197,10 @@ p {
   display: none;
 }
 
+.show-completed{
+  display: flex;
+}
+
 .grey-out{
   background-color: #E8E8EE;
 }

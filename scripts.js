@@ -82,18 +82,17 @@ function makeCards(arr) {
   arr.forEach(function(element){
     prependCard(element);
   })
-  checkIfCompleted();
+  // checkIfCompleted();
   // check if completed === true
 }
 
-function checkIfCompleted(){
-  todoArray.forEach(function(card) {
-    if (card.completed === true) {
-      console.log($(this));
-      // $(this).parent().parent().toggleClass('grey-out');
-    }
-  })
-}
+// function checkIfCompleted(){
+//   todoArray.forEach(function(card) {
+//     if (card.completed === true) {
+//       // $(this).parent().parent().toggleClass('grey-out');
+//     }
+//   })
+// }
 
 
 
@@ -273,4 +272,20 @@ function markCompleted(){
   })
   $(this).parent().parent().toggleClass('grey-out');
   sendTodoToStorage();
+}
+
+$('.show-completed-todos-button').on('click', prependCompletedTodos);
+
+function prependCompletedTodos(){
+  // filter the todo array for card.completed === true
+  var completedTodosArray = todoArray.filter(function(element){
+    return element.completed === true;
+  })
+
+  makeCards(completedTodosArray);
+  .toggle('show-completed')
+  // with the returned array, forEach prepend all the cards
+  // completedTodosArray.forEach(function(element){
+  //   prependCard(element);
+  // })
 }
