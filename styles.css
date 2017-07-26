@@ -77,7 +77,7 @@ form {
   padding-left: 5px;
 }
 
-#save-button {
+#save-button, .show-completed-todos-button {
   background-color: #00A79D;
   border-style: none;
   color: #FFFFFF;
@@ -177,6 +177,16 @@ p {
   margin-right: 20px;
 }
 
+.show-completed-todos-container{
+  width: 50%;
+  margin: auto;
+}
+
+.show-completed-todos-button{
+  width: 100%;
+}
+
+
 .card-completed-task-button{
   align-self: flex-start;
   font-size: 16px;
@@ -185,6 +195,10 @@ p {
 .true {
   background-color: #E8E8EE;
   display: none;
+}
+
+.show-completed{
+  display: flex;
 }
 
 .grey-out{
@@ -230,7 +244,7 @@ p {
     padding-bottom: 75px;
   }
 
-  #save-button {
+  #save-button{
     font-size: 30px;
     height: 60px;
   }

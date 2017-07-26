@@ -19,6 +19,7 @@ $('.todo-stream').on('keyup', '.card-title-editable', editTitle);
 $('.todo-stream').on('keyup', '.card-task-editable', editTask);
 $("#save-button").on('click', saveButton);
 $("#todo-task, #todo-title").keyup(enableButton);
+$(".todo-stream").on('click', '.card-completed-task-button', markCompleted);
 
 // HOVER CHANGE IMAGE FUNCTIONS
 
@@ -81,18 +82,17 @@ function makeCards(arr) {
   arr.forEach(function(element){
     prependCard(element);
   })
-  checkIfCompleted();
+  // checkIfCompleted();
   // check if completed === true
 }
 
-function checkIfCompleted(){
-  todoArray.forEach(function(card) {
-    if (card.completed === true) {
-      console.log($(this));
-      // $(this).parent().parent().toggleClass('grey-out');
-    }
-  })
-}
+// function checkIfCompleted(){
+//   todoArray.forEach(function(card) {
+//     if (card.completed === true) {
+//       // $(this).parent().parent().toggleClass('grey-out');
+//     }
+//   })
+// }
 
 
 
@@ -263,8 +263,6 @@ function resetInputs() {
   $('#todo-task').val('');
 };
 
-$(".todo-stream").on('click', '.card-completed-task-button', markCompleted);
-
 function markCompleted(){
   var id= $(this).closest('.todo-card')[0].id;
   todoArray.forEach(function(card) {
@@ -274,4 +272,20 @@ function markCompleted(){
   })
   $(this).parent().parent().toggleClass('grey-out');
   sendTodoToStorage();
+}
+
+$('.show-completed-todos-button').on('click', prependCompletedTodos);
+
+function prependCompletedTodos(){
+  // filter the todo array for card.completed === true
+  var completedTodosArray = todoArray.filter(function(element){
+    return element.completed === true;
+  })
+
+  makeCards(completedTodosArray);
+  .toggle('show-completed')
+  // with the returned array, forEach prepend all the cards
+  // completedTodosArray.forEach(function(element){
+  //   prependCard(element);
+  // })
 }
