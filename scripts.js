@@ -1,4 +1,5 @@
 var todoArray = [];
+var showCompleteTodosButtonCounter = 0;
 getTodoFromStorage();
 makeCards(todoArray);
 
@@ -8,6 +9,7 @@ function FreshTodo(title, task, status) {
   this.status = "swill";
   this.id = Date.now();
   this.completed = false;
+  this.show = true;
 }
 
 //EVENT LISTENERS
@@ -81,6 +83,7 @@ function prependCard(todo) {
 function makeCards(arr) {
   arr.forEach(function(element){
     prependCard(element);
+    $('.show-all').removeClass('show-all');
   })
   // checkIfCompleted();
   // check if completed === true
@@ -266,11 +269,18 @@ function resetInputs() {
 function markCompleted(){
   var id= $(this).closest('.todo-card')[0].id;
   todoArray.forEach(function(card) {
-    if (card.id == id) {
+    if (card.id == id && card.completed === false) {
       card.completed = true;
+      $('#' + id).addClass('true show-all');
+      $('#' + id).removeClass('false');
+      return;
+    } else if (card.id == id && card.completed === true){
+      card.completed = false;
+      $('#' + id).removeClass('true');
+      $('#' + id).addClass('false');
     }
   })
-  $(this).parent().parent().toggleClass('grey-out');
+  // $(this).parent().parent().toggleClass('grey-out');
   sendTodoToStorage();
 }
 
@@ -281,11 +291,38 @@ function prependCompletedTodos(){
   var completedTodosArray = todoArray.filter(function(element){
     return element.completed === true;
   })
+  var uncompletedTodosArray = todoArray.filter(function(element){
+    return element.completed === false;
+  })
 
-  makeCards(completedTodosArray);
-  .toggle('show-completed')
-  // with the returned array, forEach prepend all the cards
-  // completedTodosArray.forEach(function(element){
-  //   prependCard(element);
-  // })
+  showCompleteTodosButtonCounter++;
+
+  if(showCompleteTodosButtonCounter % 2 === 1){
+    removeAllCards();
+    makeCards(uncompletedTodosArray);
+    makeCards(completedTodosArray);
+    $('.todo-card').toggleClass('show-all');
+  }
+  else {
+    $('.todo-card').toggleClass('show-all');
+  }
+  //
+  // removeAllCards();
+  // makeCards(uncompletedTodosArray);
+  // makeCards(completedTodosArray);
+  // $('.todo-card').toggleClass('show-all');
+
+
 }
+
+// function showCompleted(){
+//   var id= $(this).find('.todo-card')[0].id;
+//   console.log($(this))
+//   todoArray.forEach(function(card) {
+//     if (card.id == id) {
+//       card.completed = true;
+//     }
+//   })
+//   $(this).parent().parent().toggleClass('show-all');
+//   sendTodoToStorage();
+// }
