@@ -19,6 +19,7 @@ $('.todo-stream').on('keyup', '.card-title-editable', editTitle);
 $('.todo-stream').on('keyup', '.card-task-editable', editTask);
 $("#save-button").on('click', saveButton);
 $("#todo-task, #todo-title").keyup(enableButton);
+$(".todo-stream").on('click', '.card-completed-task-button', markCompleted);
 
 // HOVER CHANGE IMAGE FUNCTIONS
 
@@ -262,8 +263,6 @@ function resetInputs() {
   $('#todo-title').val('');
   $('#todo-task').val('');
 };
-
-$(".todo-stream").on('click', '.card-completed-task-button', markCompleted);
 
 function markCompleted(){
   var id= $(this).closest('.todo-card')[0].id;
