@@ -1,6 +1,12 @@
 var todoArray = [];
 var showCompleteTodosButtonCounter = 0;
 var showMoreTodosButtonCounter = 0;
+var todoCriticalFilterCounter = 0;
+var todoHighFilterCounter = 0;
+var todoNormalFilterCounter = 0;
+var todoLowFilterCounter = 0;
+var todoNoneFilterCounter = 0;
+
 getTodoFromStorage();
 makeTenCards(todoArray);
 
@@ -369,26 +375,51 @@ $('.todo-low-filter-button').on('click', todoLowFilter)
 $('.todo-none-filter-button').on('click', todoNoneFilter)
 
 function todoCriticalFilter(){
-  $('.critical').removeClass('hidden');
-  $('.high, .normal, .low, .none').addClass('hidden');
+  todoCriticalFilterCounter ++;
+  if(todoCriticalFilterCounter % 2 === 1){
+    $('.critical').removeClass('hidden');
+    $('.high, .normal, .low, .none').addClass('hidden');
+  } else {
+    $('.todo-card').removeClass('hidden');
+  }
 }
 
 function todoHighFilter() {
-  $('.high').removeClass('hidden');
-  $('.critical, .normal, .low, .none').addClass('hidden');
+  todoHighFilterCounter ++;
+  if(todoHighFilterCounter % 2 === 1){
+    $('.high').removeClass('hidden');
+    $('.critical, .normal, .low, .none').addClass('hidden');
+  } else {
+    $('.todo-card').removeClass('hidden');
+  }
 }
 
 function todoNormalFilter() {
-  $('.normal').removeClass('hidden');
-  $('.critical, .high, .low, .none').toggleClass('hidden');
+  todoNormalFilterCounter ++;
+  if(todoNormalFilterCounter % 2 === 1){
+    $('.normal').removeClass('hidden');
+    $('.critical, .high, .low, .none').addClass('hidden');
+  } else {
+    $('.todo-card').removeClass('hidden');
+  }
 }
 
 function todoLowFilter() {
-  $('.low').removeClass('hidden');
-  $('.critical, .high, .normal, .none').toggleClass('hidden');
+  todoLowFilterCounter ++;
+  if(todoLowFilterCounter % 2 === 1){
+    $('.low').removeClass('hidden');
+    $('.critical, .high, .normal, .none').addClass('hidden');
+  } else {
+    $('.todo-card').removeClass('hidden');
+  }
 }
 
 function todoNoneFilter() {
-  $('.none').removeClass('hidden');
-  $('.critical, .high, .normal, .low').toggleClass('hidden');
+  todoNoneFilterCounter ++;
+  if(todoNoneFilterCounter % 2 === 1){
+    $('.none').removeClass('hidden');
+    $('.critical, .high, .normal, .low').addClass('hidden');
+  } else {
+    $('.todo-card').removeClass('hidden');
+  }
 }
