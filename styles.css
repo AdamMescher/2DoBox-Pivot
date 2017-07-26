@@ -197,12 +197,19 @@ p {
   display: none;
 }
 
-.show-completed{
-  display: flex;
-}
+
 
 .grey-out{
   background-color: #E8E8EE;
+}
+
+
+.show-all {
+  display: block;
+}
+
+.false{
+  background-color: #FFFFFF;
 }
 
 @media (max-width: 900px) {
