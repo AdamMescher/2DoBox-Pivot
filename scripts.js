@@ -7,6 +7,7 @@ function FreshTodo(title, task, status) {
   this.task = task;
   this.status = "swill";
   this.id = Date.now();
+  this.completed = false;
 }
 
 //EVENT LISTENERS
@@ -14,8 +15,8 @@ $('#filter-bar').on('keyup', searchtodos);
 $(".todo-stream").on('click', ".delete-button", deleteCard)
 $('.todo-stream').on('click', '#upvote-button', upVote);
 $('.todo-stream').on('click', '#downvote-button', downVote);
-$('.todo-stream').on('keyup', 'h2', editTitle);
-$('.todo-stream').on('keyup', 'p', editTask);
+$('.todo-stream').on('keyup', '.card-title-editable', editTitle);
+$('.todo-stream').on('keyup', '.card-task-editable', editTask);
 $("#save-button").on('click', saveButton);
 $("#todo-task, #todo-title").keyup(enableButton);
 
@@ -59,15 +60,18 @@ function getTodoFromStorage() {
 // CARDS
 function prependCard(todo) {
   $('.todo-stream').prepend(
-    `<div class="todo-card" id="${todo.id}"><div class="card-title-flex">
-        <h2 contenteditable=true>${todo.title}</h2>
+    `<div class="todo-card ${todo.completed}" id="${todo.id}"><div class="card-title-flex">
+        <h2 class="card-title-editable" contenteditable=true>${todo.title}</h2>
         <img src="icons/delete.svg" class="card-buttons delete-button" />
       </div>
-      <p contenteditable=true>${todo.task}</p>
+      <p class="card-task-editable" contenteditable=true>${todo.task}</p>
       <div class="card-quality-flex quality-spacing">
-        <img src="icons/upvote.svg" class="card-buttons" id="upvote-button"/>
-        <img src="icons/downvote.svg" class="card-buttons" id="downvote-button" />
-        <h3>quality: <span class="todo-quality">${todo.status}</span></h3>
+        <div class = "card-bottom-left">
+          <img src="icons/upvote.svg" class="card-buttons" id="upvote-button"/>
+          <img src="icons/downvote.svg" class="card-buttons" id="downvote-button" />
+          <h3>quality: <span class="todo-quality">${todo.status}</span></h3>
+        </div>
+          <button class="card-completed-task-button">completed task</button>
       </div>
     </div>`
   );
@@ -77,7 +81,20 @@ function makeCards(arr) {
   arr.forEach(function(element){
     prependCard(element);
   })
+  checkIfCompleted();
+  // check if completed === true
 }
+
+function checkIfCompleted(){
+  todoArray.forEach(function(card) {
+    if (card.completed === true) {
+      console.log($(this));
+      // $(this).parent().parent().toggleClass('grey-out');
+    }
+  })
+}
+
+
 
 function addCard() {
   var newTodo = new FreshTodo($('#todo-title').val(), $('#todo-task').val());
@@ -208,7 +225,7 @@ function makeGenius(element) {
 // EDIT TEXT FUNCTION
 function leaveTarget() {
   event.preventDefault();
-  $('p, h2').blur();
+  $('.card-task-editable, .card-title-editable').blur();
 }
 
 function editTitle(event) {
@@ -245,3 +262,16 @@ function resetInputs() {
   $('#todo-title').val('');
   $('#todo-task').val('');
 };
+
+$(".todo-stream").on('click', '.card-completed-task-button', markCompleted);
+
+function markCompleted(){
+  var id= $(this).closest('.todo-card')[0].id;
+  todoArray.forEach(function(card) {
+    if (card.id == id) {
+      card.completed = true;
+    }
+  })
+  $(this).parent().parent().toggleClass('grey-out');
+  sendTodoToStorage();
+}

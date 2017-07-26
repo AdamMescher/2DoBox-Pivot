@@ -129,7 +129,12 @@ form {
 }
 
 .card-quality-flex {
-  justify-content: flex-start;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.card-bottom-left{
+  display: flex;
 }
 
 .todo-quality {
@@ -170,6 +175,20 @@ p {
 #downvote-button {
   margin-bottom: 20px;
   margin-right: 20px;
+}
+
+.card-completed-task-button{
+  align-self: flex-start;
+  font-size: 16px;
+}
+
+.true {
+  background-color: #E8E8EE;
+  display: none;
+}
+
+.grey-out{
+  background-color: #E8E8EE;
 }
 
 @media (max-width: 900px) {
