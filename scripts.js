@@ -6,7 +6,7 @@ makeCards(todoArray);
 function FreshTodo(title, task, status) {
   this.title = title;
   this.task = task;
-  this.status = "swill";
+  this.status = "normal";
   this.id = Date.now();
   this.completed = false;
   this.show = true;
@@ -72,7 +72,7 @@ function prependCard(todo) {
         <div class = "card-bottom-left">
           <img src="icons/upvote.svg" class="card-buttons" id="upvote-button"/>
           <img src="icons/downvote.svg" class="card-buttons" id="downvote-button" />
-          <h3>quality: <span class="todo-quality">${todo.status}</span></h3>
+          <h3>importance: <span class="todo-quality">${todo.status}</span></h3>
         </div>
           <button class="card-completed-task-button">completed task</button>
       </div>
@@ -175,10 +175,14 @@ function downVote() {
   var index = todoArray.findIndex(function(element){
     return element.id == todoID;
   });
-  if (isGenius(todoArray[index]) === true )  {
-    makePlausible(todoArray[index]);
-  } else if ( isPlausible( todoArray[index]) === true ) {
-      makeSwill(todoArray[index]);
+  if (isCritical(todoArray[index]) === true){
+    makeHigh(todoArray[index]);
+  } else if (isHigh(todoArray[index]) === true){
+    makeNormal(todoArray[index]);
+  } else if (isNormal(todoArray[index]) === true){
+    makeLow(todoArray[index]);
+  } else if(isLow(todoArray[index]) === true) {
+    makeNone(todoArray[index]);
   }
   sendTodoToStorage();
 }
@@ -189,40 +193,61 @@ function upVote() {
   var index = todoArray.findIndex(function (element){
       return element.id == todoID;
     })
-  if (isSwill(todoArray[index]) === true){
-    makePlausible(todoArray[index]);
-
-  } else if (isPlausible(todoArray[index]) === true){
-    makeGenius(todoArray[index]);
+  if (isNone(todoArray[index]) === true){
+    makeLow(todoArray[index]);
+  } else if (isLow(todoArray[index]) === true){
+    makeNormal(todoArray[index]);
+  } else if (isNormal(todoArray[index]) === true){
+    makeHigh(todoArray[index]);
+  } else if(isHigh(todoArray[index]) === true) {
+    makeCritical(todoArray[index]);
   }
   sendTodoToStorage();
 }
 
-function isSwill(element) {
-  return element.status === 'swill';
+function isNone(element) {
+  return element.status === 'none';
 }
 
-function isPlausible(element) {
-  return element.status === 'plausible';
+function isLow(element) {
+  return element.status === 'low';
 }
 
-function isGenius(element) {
-  return element.status === 'genius';
+function isNormal(element) {
+  return element.status === 'normal';
 }
 
-function makeSwill(element) {
-  element.status = 'swill';
-  $('#' + element.id).find('.todo-quality').text('swill');
+function isHigh(element) {
+  return element.status === 'high';
 }
 
-function makePlausible(element){
-  element.status = "plausible";
-  $('#' + element.id).find('.todo-quality').text('plausible');
+function isCritical(element) {
+  return element.status === 'critical';
 }
 
-function makeGenius(element) {
-  element.status = "genius";
-  $('#' + element.id).find('.todo-quality').text('genius');
+function makeNone(element) {
+  element.status = 'none';
+  $('#' + element.id).find('.todo-quality').text('none');
+}
+
+function makeLow(element) {
+  element.status = 'low';
+  $('#' + element.id).find('.todo-quality').text('low');
+}
+
+function makeNormal(element) {
+  element.status = 'normal';
+  $('#' + element.id).find('.todo-quality').text('normal');
+}
+
+function makeHigh(element){
+  element.status = "high";
+  $('#' + element.id).find('.todo-quality').text('high');
+}
+
+function makeCritical(element) {
+  element.status = "critical";
+  $('#' + element.id).find('.todo-quality').text('critical');
 }
 
 // EDIT TEXT FUNCTION
