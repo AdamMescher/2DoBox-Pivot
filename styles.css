@@ -61,6 +61,10 @@ form {
   width: 100%;
 }
 
+.user-inputs:focus{
+    border: 3px solid orange;
+}
+
 ::-webkit-input-placeholder {
   color: #D1D3D4;
   font-family: "Open Sans";

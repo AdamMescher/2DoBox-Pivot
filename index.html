@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -9,13 +9,13 @@
     <link href="https://fonts.googleapis.com/css?family=Roboto+Slab:700" rel="stylesheet" />
   </head>
   <body>
-    <div class="container">
+    <div class="container" role="presentation">
       <section class="top">
         <article class="todo-log">
-          <h1><span class="todo-text">2Do</span><span class="box-text">box</span></h1>
+          <h1><span class="todo-text" role="presentation">2Do</span><span class="box-text" role="presentation">box</span></h1>
           <form>
-            <input id="todo-title" class="user-inputs" type="text" name="title" placeholder="Title" required />
-            <input id="todo-task" class="user-inputs" type="text" name="body" placeholder="Task" required />
+            <input id="todo-title" class="user-inputs" type="text" name="title" placeholder="Title" required aria-required='true' />
+            <input id="todo-task" class="user-inputs" type="text" name="body" placeholder="Task" required aria-required='true'/>
             <button id="save-button" class="user-inputs" type="submit" disabled />save</button>
           </form>
         </article>
@@ -23,17 +23,17 @@
       <section class="bottom search-box">
         <article class="todo-log">
           <form>
-            <input id="filter-bar" class="user-inputs" type="text" name="filter" placeholder="Filter" />
+            <input id="filter-bar" class="user-inputs" type="text" name="filter" placeholder="Filter" aria-required='false' />
           </form>
-          <div class="todo-importance-filter-container">
-              <button class="todo-critical-filter-button importance-filter-button">critical</button>
-              <button class="todo-high-filter-button importance-filter-button">high</button>
-              <button class="todo-normal-filter-button importance-filter-button">normal</button>
-              <button class="todo-low-filter-button importance-filter-button">low</button>
-              <button class="todo-none-filter-button importance-filter-button">none</button>
+          <div class="todo-importance-filter-container" role="presentation">
+            <button class="todo-critical-filter-button importance-filter-button" aria-label="filter critical importance todos">critical</button>
+            <button class="todo-high-filter-button importance-filter-button" aria-label="filter high importance todos">high</button>
+            <button class="todo-normal-filter-button importance-filter-button" aria-label="filter normal importance todos">normal</button>
+            <button class="todo-low-filter-button importance-filter-button" aria-label="filter low importance todos">low</button>
+            <button class="todo-none-filter-button importance-filter-button" aria-label="filter none importance todos">none</button>
           </div>
         </article>
-        <article class="show-completed-todos-container">
+        <article class="show-completed-todos-container" role="presentation">
           <button class="show-completed-todos-button">show completed todos</button>
         </article>
       </section>
