@@ -17,7 +17,7 @@ body {
 }
 
 .top {
-  background-color: #E5F3F2;
+  background-color: #3498DB;
   height: 255px;
   position: sticky;
   top: 0;
@@ -38,11 +38,11 @@ h1 {
 }
 
 .todo-text {
-  color: #00A79D;
+  color: #2C3E50;
 }
 
 .box-text {
-  color: #6D6E71;
+  color: orange;
 }
 
 form {
@@ -77,16 +77,30 @@ form {
   padding-left: 5px;
 }
 
-#save-button, .show-completed-todos-button {
-  background-color: #00A79D;
+#save-button, .show-completed-todos-button, .importance-filter-button, .show-more-todos-button {
+  padding: 5px;
+  background-color: #2C3E50;
   border-style: none;
   color: #FFFFFF;
   font-size: 16px;
   margin-bottom: 5px;
 }
 
-#save-button:hover {
-  background-color: #045E55;
+.show-more-todos-button{
+  width: 30%;
+  margin-left: 35%;
+  margin-top: 23px;
+  margin-bottom: 23px;
+  background-color: #D1D3D4;
+  border-radius: 40px;
+}
+
+#save-button:hover, .show-completed-todos-button:hover, .importance-filter-button:hover{
+  background-color: #FFA500;
+}
+
+.show-more-todos-button:hover, .card-completed-task-button:hover{
+  background-color: #777777;
 }
 
 #save-button:disabled {
@@ -107,6 +121,16 @@ form {
 .bottom {
   margin: 0;
   width: 100%;
+}
+
+.todo-importance-filter-container{
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 15px;
+}
+
+.importance-filter-button{
+  width: 16%;
 }
 
 .todo-card {
@@ -186,10 +210,35 @@ p {
   width: 100%;
 }
 
+/*.todo-critical-filter-button{
+  background-color: red;
+}
+
+.todo-high-filter-button{
+  background-color: orange;
+}
+
+.todo-normal-filter-button{
+  background-color: green;
+}
+
+.todo-low-filter-button{
+  background-color: steelblue;
+}
+
+.todo-none-filter-button{
+  background-color: blue;
+}*/
+
 
 .card-completed-task-button{
   align-self: flex-start;
-  font-size: 16px;
+  font-size: 14px;
+  height: 25px;
+  border-radius: 40px;
+  border: 0;
+  background-color: #D1D3D4;
+  color: white;
 }
 
 .true {
@@ -230,6 +279,10 @@ p {
 
 @media (max-width: 500px) {
 
+  .card-completed-task-button, .card-buttons{
+    height: 45px;
+  }
+
   .user-inputs {
   color: #6D6E71;
   font-size: 30px;
@@ -255,10 +308,33 @@ p {
     padding-bottom: 75px;
   }
 
-  #save-button{
+  #save-button, .importance-filter-button{
     font-size: 30px;
     height: 60px;
   }
+
+.importance-filter-button, .show-completed-todos-button{
+  font-size: 15px;
+  width: 18%;
+  height: 50px;
+  margin-top: 20px;
+  margin-bottom: 0;
+}
+
+.show-completed-todos-button{
+  width: 100%;
+  margin-top: 0;
+}
+
+.show-more-todos-button{
+  width: 80%;
+  margin-left: 10%;
+}
+
+h3{
+  text-align: center;
+}
+
 
   ::-webkit-#todo-task-placeholder {
     padding-bottom: 75px;
