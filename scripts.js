@@ -78,16 +78,16 @@ function prependCard(todo) {
   $('.todo-stream').prepend(
     `<div class="todo-card ${todo.completed} ${todo.status}" id="${todo.id}"><div class="card-title-flex">
         <h2 class="card-title-editable" contenteditable=true>${todo.title}</h2>
-        <img src="icons/delete.svg" class="card-buttons delete-button" />
+        <img src="icons/delete.svg" alt="delete button gray" class="card-buttons delete-button" tabindex='0' role="button" />
       </div>
       <p class="card-task-editable" contenteditable=true>${todo.task}</p>
-      <div class="card-quality-flex quality-spacing">
+      <div class="card-quality-flex quality-spacing" role="presentation">
         <div class = "card-bottom-left">
-          <img src="icons/upvote.svg" class="card-buttons" id="upvote-button"/>
-          <img src="icons/downvote.svg" class="card-buttons" id="downvote-button" />
-          <h3>importance: <span class="todo-quality">${todo.status}</span></h3>
+          <img src="icons/upvote.svg" alt="upvote button gray" class="card-buttons" id="upvote-button" tabindex='0' role='button' />
+          <img src="icons/downvote.svg" alt="downvote button gray" class="card-buttons" id="downvote-button" tabindex='0' role='button' />
+          <h3 tabindex='0'>importance: <span class="todo-quality">${todo.status}</span></h3>
         </div>
-          <button class="card-completed-task-button">completed task</button>
+          <button class="card-completed-task-button" role="button">completed task</button>
       </div>
     </div>`
   );
