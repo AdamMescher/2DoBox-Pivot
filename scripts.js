@@ -16,7 +16,6 @@ function FreshTodo(title, task, status) {
   this.status = "normal";
   this.id = Date.now();
   this.completed = false;
-  this.show = true;
 }
 
 //EVENT LISTENERS
@@ -30,6 +29,12 @@ $("#save-button").on('click', saveButton);
 $("#todo-task, #todo-title").keyup(enableButton);
 $(".todo-stream").on('click', '.card-completed-task-button', markCompleted);
 $('.show-completed-todos-button').on('click', prependCompletedTodos);
+$('.todo-critical-filter-button').on('click', todoCriticalFilter);
+$('.todo-high-filter-button').on('click', todoHighFilter);
+$('.todo-normal-filter-button').on('click', todoNormalFilter);
+$('.todo-low-filter-button').on('click', todoLowFilter);
+$('.todo-none-filter-button').on('click', todoNoneFilter);
+$('.show-more-todos-button').on('click', showMoreTodos);
 
 // HOVER CHANGE IMAGE FUNCTIONS
 
@@ -188,6 +193,11 @@ function downVote() {
   var index = todoArray.findIndex(function(element){
     return element.id == todoID;
   });
+  evaluateImportanceDownVote(index);
+  sendTodoToStorage();
+}
+
+function evaluateImportanceDownVote(index){
   if (isCritical(todoArray[index]) === true){
     makeHigh(todoArray[index]);
   } else if (isHigh(todoArray[index]) === true){
@@ -197,7 +207,6 @@ function downVote() {
   } else if(isLow(todoArray[index]) === true) {
     makeNone(todoArray[index]);
   }
-  sendTodoToStorage();
 }
 
 // UPVOTE BUTTON CALLBACK FUNCTION
@@ -206,6 +215,11 @@ function upVote() {
   var index = todoArray.findIndex(function (element){
       return element.id == todoID;
     })
+  evalueImportanceUpVote(index);
+  sendTodoToStorage();
+}
+
+function evalueImportanceUpVote(index) {
   if (isNone(todoArray[index]) === true){
     makeLow(todoArray[index]);
   } else if (isLow(todoArray[index]) === true){
@@ -215,8 +229,9 @@ function upVote() {
   } else if(isHigh(todoArray[index]) === true) {
     makeCritical(todoArray[index]);
   }
-  sendTodoToStorage();
 }
+
+
 
 function isNone(element) {
   return element.status === 'none';
@@ -355,8 +370,6 @@ function prependCompletedTodos(){
   }
 }
 
-$('.show-more-todos-button').on('click', showMoreTodos);
-
 function showMoreTodos() {
   showMoreTodosButtonCounter ++;
   if(showMoreTodosButtonCounter % 2 === 0) {
@@ -367,12 +380,6 @@ function showMoreTodos() {
     showAllCards();
   }
 }
-
-$('.todo-critical-filter-button').on('click', todoCriticalFilter)
-$('.todo-high-filter-button').on('click', todoHighFilter)
-$('.todo-normal-filter-button').on('click', todoNormalFilter)
-$('.todo-low-filter-button').on('click', todoLowFilter)
-$('.todo-none-filter-button').on('click', todoNoneFilter)
 
 function todoCriticalFilter(){
   todoCriticalFilterCounter ++;
