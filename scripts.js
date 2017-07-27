@@ -231,8 +231,6 @@ function evalueImportanceUpVote(index) {
   }
 }
 
-
-
 function isNone(element) {
   return element.status === 'none';
 }
@@ -336,17 +334,26 @@ function markCompleted(){
   var id= $(this).closest('.todo-card')[0].id;
   todoArray.forEach(function(card) {
     if (card.id == id && card.completed === false) {
-      card.completed = true;
-      $('#' + id).addClass('true show-all');
-      $('#' + id).removeClass('false');
+      markCompletedCardCompletedIsFalse(card, id);
       return;
     } else if (card.id == id && card.completed === true){
-      card.completed = false;
-      $('#' + id).removeClass('true');
-      $('#' + id).addClass('false');
+      markCompletedCardCompletedIsTrue(card, id);
     }
   })
   sendTodoToStorage();
+}
+
+function markCompletedCardCompletedIsFalse(card, id) {
+  console.log(card);
+  card.completed = true;
+  $('#' + id).addClass('true show-all');
+  $('#' + id).removeClass('false');
+}
+
+function markCompletedCardCompletedIsTrue(card, id) {
+  card.completed = false;
+  $('#' + id).removeClass('true');
+  $('#' + id).addClass('false');
 }
 
 function prependCompletedTodos(){
@@ -358,16 +365,17 @@ function prependCompletedTodos(){
   })
 
   showCompleteTodosButtonCounter++;
-
   if(showCompleteTodosButtonCounter % 2 === 1){
-    removeAllCards();
-    makeCards(uncompletedTodosArray);
-    makeCards(completedTodosArray);
-    $('.todo-card').toggleClass('show-all');
+    showCompleteTodsButtonCounterIsOdd(completedTodosArray, uncompletedTodosArray)
   }
-  else {
-    $('.todo-card').toggleClass('show-all');
-  }
+  else $('.todo-card').toggleClass('show-all');
+}
+
+function showCompleteTodsButtonCounterIsOdd(completed, uncompleted) {
+  removeAllCards();
+  makeCards(uncompleted);
+  makeCards(completed);
+  $('.todo-card').toggleClass('show-all');
 }
 
 function showMoreTodos() {
